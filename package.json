@@ -1,0 +1,31 @@
+{
+  "name": "pneumatic-tubes",
+  "version": "1.0.0",
+  "description": "migrate packages between registries (using npm publish)",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bcoe/pneumatic-tubes.git"
+  },
+  "keywords": [
+    "migrate",
+    "npm"
+  ],
+  "author": "Ben Coe <ben@npmjs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcoe/pneumatic-tubes/issues"
+  },
+  "homepage": "https://github.com/bcoe/pneumatic-tubes#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "axios": "^0.18.0",
+    "changes-stream": "^2.2.0",
+    "end-of-stream": "^1.4.1",
+    "mkdirp": "^0.5.1",
+    "uuid": "^3.2.1"
+  }
+}
