@@ -7,7 +7,7 @@ const mkdirp = require('mkdirp')
 const path = require('path')
 const uuid = require('uuid')
 
-const sourceRegistry = process.env.PNEUMATIC_TUBES_SOURCE_REGISTRY
+const sourceCouchdb = process.env.PNEUMATIC_TUBES_SOURCE_COUCHDB
 const targetRegistry = process.env.PNEUMATIC_TUBES_TARGET_REGISTRY
 const lastSequence = process.env.PNEUMATIC_TUBES_LAST_SEQUENCE
 
@@ -18,7 +18,7 @@ class Tubes {
   }
   series () {
     const changes = new ChangesStream({
-      db: sourceRegistry, // full database URL
+      db: sourceCouchdb, // full database URL
       include_docs: true, // whether or not we want to return the full document as a property,
       since: lastSequence
     })
