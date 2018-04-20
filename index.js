@@ -7,6 +7,10 @@ const mkdirp = require('mkdirp')
 const path = require('path')
 const uuid = require('uuid')
 
+const sourceCouchdb = process.env.PNEUMATIC_TUBES_SOURCE_COUCHDB
+const targetRegistry = process.env.PNEUMATIC_TUBES_TARGET_REGISTRY
+const lastSequence = process.env.PNEUMATIC_TUBES_LAST_SEQUENCE
+
 class Tubes {
   constructor (opts) {
     this.tmpFolder = '/tmp/tarballs'
@@ -14,9 +18,9 @@ class Tubes {
   }
   series () {
     const changes = new ChangesStream({
-      db: 'https://replicate.npmjs.com', // full database URL
+      db: sourceCouchdb, // full database URL
       include_docs: true, // whether or not we want to return the full document as a property,
-      since: 100000
+      since: lastSequence
     })
     changes.on('readable', async () => {
       const change = changes.read()
@@ -69,7 +73,7 @@ class Tubes {
   }
   publish (filename) {
     return new Promise((resolve, reject) => {
-      exec(`npm publish ${filename}`, {
+      exec(`npm --registry=${targetRegistry} publish ${filename}`, {
         cwd: this.tmpFolder,
         env: process.env
       }, (err, stdout, stderr) => {
