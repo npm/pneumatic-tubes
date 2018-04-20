@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+  registry:
+    image: sisk/npm-registry-couchapp:2.6.10
+    ports:
+      - 15984:5984
+    restart: unless-stopped
+    volumes:
+      - couch_logs:/usr/local/var/log/couchdb
+      - couch_data:/usr/local/var/lib/couchdb
+
+  kappa:
+    image: sisk/kappa:1.0.0-rc.14
+    depends_on:
+      - registry
+    ports:
+      - 8787:8000
+    restart: unless-stopped
+
+volumes:
+  couch_logs: {}
+  couch_data: {}
