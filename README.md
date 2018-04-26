@@ -8,10 +8,24 @@ Transfer kappa registry mirror contents to an npmE appliance.
 - npm 5 - 5.6 (5.7+ are incompatible with npmE)
 - run `npm install`
 - login to your _target_ registry if needed: `npm --registry=<target-registry-url> login`
-- setup environment variables for these registries
-  - `PNEUMATIC_TUBES_SOURCE_COUCHDB = <source-couchdb-url>`
-  - `PNEUMATIC_TUBES_TARGET_REGISTRY = <target-registry-url>`
-  - _[optional]_ `PNEUMATIC_TUBES_LAST_SEQUENCE = <sequence-number>` defaults to `0` (zero)
+- options are now exposed as both options and environment variables
+
+## Usage
+
+```
+$ node index.js --help
+Options:
+  --help             Show help                                         [boolean]
+  --version          Show version number                               [boolean]
+  --source-couchdb   the CouchDB from which to stream changes
+                           [string] [default: "http://localhost:15984/registry"]
+  --target-registry  the registry to populate
+                                    [string] [default: "http://localhost:18080"]
+  --last-sequence    the source sequence                   [number] [default: 0]
+  --halt-on-error    halt when an error occurs        [boolean] [default: false]
+  --tmp-folder       scratch directory for package tarballs
+                                             [string] [default: "/tmp/tarballs"]
+```
 
 # IMPORTANT: You need to point the import script at the CouchDB instance associated with your kappa proxy. The kappa proxy itself doesn't foward the `_changes` feed, so direct couch access is necessary.
 
