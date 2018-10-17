@@ -1,5 +1,5 @@
 const axios = require('axios')
-const ChangesStream = require('changes-stream');
+const ChangesStream = require('changes-stream')
 const eos = require('end-of-stream')
 const exec = require('child_process').exec
 const fs = require('fs')
@@ -57,19 +57,19 @@ class Tubes {
       url: tarball,
       responseType: 'stream'
     })
-    .then(function(response) {
-      return new Promise((resolve, reject) => {
-        const stream = response.data.pipe(fs.createWriteStream(filename))
-        eos(stream, err => {
-          if (err) return reject(err)
-          else return resolve()
+      .then(function (response) {
+        return new Promise((resolve, reject) => {
+          const stream = response.data.pipe(fs.createWriteStream(filename))
+          eos(stream, err => {
+            if (err) return reject(err)
+            else return resolve()
+          })
         })
       })
-    })
-    .then(() => {
-      console.info(`finished writing ${filename}`)
-      return filename
-    })
+      .then(() => {
+        console.info(`finished writing ${filename}`)
+        return filename
+      })
   }
   publish (filename) {
     return new Promise((resolve, reject) => {

@@ -30,6 +30,7 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "kappa": "^1.0.0-rc.14"
+    "kappa": "^1.0.0-rc.14",
+    "standard": "^12.0.1"
   }
 }
