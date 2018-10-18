@@ -48,7 +48,7 @@ public registry, create an organization named `babel` in npm Enterprise.
 To migrate from npm Orgs, you need an authorization token from the public
 registry.
 
-1. visit `https://www.npmjs.com`.
+1. Visit https://www.npmjs.com.
 2. in the account drop down in the upper right, choose the option "Tokens".
 3. click "Create New Token", and copy this somewhere safe for later.
 
