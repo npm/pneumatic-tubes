@@ -61,7 +61,7 @@ npm login
 
 ### 4. Create a text file containing the packages you wish to migrate
 
-_Note: you can only publish scoped modules to your private registry._
+_Note: you can only publish scoped packages to your private registry._
 
 The text file should look something like this:
 
