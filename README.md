@@ -31,37 +31,18 @@ Run:
 
 ## Importing From npm Orgs
 
-### Prerequisites
-
-You must purchase and configure an [npm Enterprise](https://www.npm-enterprise.com/) instance before you can migrate from npm Orgs to npm Enterprise.
-
-### 1. Create a matching organization in npm Enterprise
-
-You should create an organization in npm Enterprise that matches the name of
-the organization that you wish to migrate from in the public registry.
-
-As an example, if you want to migrate from your organization `@babel` on the
-public registry, create an organization named `babel` in npm Enterprise.
-
-### 2. Create an authorization token on the npm public registry
+### 1. Create an authorization token
 
 To migrate from npm Orgs, you need an authorization token from the public
 registry.
 
-1. Visit https://www.npmjs.com.
-2. In the account drop down in the upper right corner of the page, click "Tokens".
-3. Click "Create New Token", then copy the generated token to a local text file.
+1. visit `https://www.npmjs.com`.
+2. in the account drop down in the upper right, choose the option "Tokens".
+3. click "Create New Token", and copy this somewhere safe for later.
 
-### 3. Login to your npm Enterprise instance
-As an npm Enterprise administrator, log in to your instance:
-```
-npm config set registry https://registry.my-instance.npme.io
-npm login
-```
+### 2. Create a text file containing the packages you wish to migrate
 
-### 4. Create a text file containing the packages in the organization you wish to migrate
-
-_Note: you can only publish scoped packages to your private registry._
+_Note: you can only publish scoped modules to your private registry._
 
 The text file should look something like this:
 
@@ -71,15 +52,30 @@ The text file should look something like this:
 @babel/template
 ```
 
+### 3. Login to your npm Enterprise Instance
+
+```
+npm config set registry https://registry.my-instance.npme.io
+npm login
+```
+
+### 4. Create matching organization in npm Enterprise
+
+You should create an organization in npm Enterprise that matches the name of
+the organization that you wish to migrate from in npm Orgs.
+
+As an example, if you want to migrate from your organization `@babel` on the
+public registry, create an organization named `babel` in npm Enterprise.
+
 ### 5. Run the migration tool
 
 It's now time to run the migration tool, using the token and text file that
 you generated.
 
-_Note: this will migrate all versions of each package listed in the text file._
+_Note: this will migrate all versions of your module._
 
 ```
-./index.js orgs-import --source-token=[redacted] --target-registry=https://registry.my-instance.npme.io --migrate-file=migrate-file.txt
+./index.js orgs-import --source-token=[redacted] --target-registry=https://registry..npme.io --migrate-file=migrate-file.txt
 ```
 
 ## Development
