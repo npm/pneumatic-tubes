@@ -76,7 +76,7 @@ The text file should look something like this:
 It's now time to run the migration tool, using the token and text file that
 you generated.
 
-_Note: this will migrate all versions of your module._
+_Note: this will migrate all versions of each package listed in the text file._
 
 ```
 ./index.js orgs-import --source-token=[redacted] --target-registry=https://registry.my-instance.npme.io --migrate-file=migrate-file.txt
