@@ -2,9 +2,8 @@
   "name": "pneumatic-tubes",
   "version": "1.0.1",
   "description": "migrate packages between registries (using npm publish)",
-  "main": "index.js",
+  "bin": "./index.js",
   "scripts": {
-    "import": "node index.js",
     "test": "standard"
   },
   "repository": {
@@ -27,7 +26,8 @@
     "changes-stream": "^2.2.0",
     "end-of-stream": "^1.4.1",
     "mkdirp": "^0.5.1",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "yargs": "^12.0.2"
   },
   "devDependencies": {
     "kappa": "^1.0.0-rc.14",
