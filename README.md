@@ -59,7 +59,7 @@ npm config set registry https://registry.my-instance.npme.io
 npm login
 ```
 
-### 4. Create a text file containing the packages you wish to migrate
+### 4. Create a text file containing the packages in the organization you wish to migrate
 
 _Note: you can only publish scoped packages to your private registry._
 
