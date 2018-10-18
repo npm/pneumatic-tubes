@@ -53,7 +53,7 @@ registry.
 3. Click "Create New Token", then copy the generated token to a local text file.
 
 ### 3. Login to your npm Enterprise instance
-
+As an npm Enterprise administrator, log in to your instance:
 ```
 npm config set registry https://registry.my-instance.npme.io
 npm login
