@@ -38,7 +38,7 @@ You must purchase and configure an [npm Enterprise](https://www.npm-enterprise.c
 ### 1. Create a matching organization in npm Enterprise
 
 You should create an organization in npm Enterprise that matches the name of
-the organization that you wish to migrate from in npm Orgs.
+the organization that you wish to migrate from in the public registry.
 
 As an example, if you want to migrate from your organization `@babel` on the
 public registry, create an organization named `babel` in npm Enterprise.
