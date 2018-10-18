@@ -52,7 +52,7 @@ registry.
 2. in the account drop down in the upper right, choose the option "Tokens".
 3. click "Create New Token", and copy this somewhere safe for later.
 
-### 3. Login to your npm Enterprise Instance
+### 3. Login to your npm Enterprise instance
 
 ```
 npm config set registry https://registry.my-instance.npme.io
