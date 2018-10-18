@@ -26,7 +26,7 @@ const opts = require('yargs')
   })
   .option('tmp-folder', {
     describe: 'temporary folder to stage packages in',
-    default: '/tmp/tarballs',
+    default: '/tmp/tarballs'
   })
   .demandCommand(1)
   .argv
@@ -41,7 +41,9 @@ class Tubes {
     mkdirp.sync(this.tmpFolder)
   }
   start () {
-    new ChangesStreamSource(this, this.opts)
+    let source = null
+    source = new ChangesStreamSource(this, this.opts)
+    source.start()
   }
   publish (filename) {
     return new Promise((resolve, reject) => {
