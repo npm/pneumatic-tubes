@@ -43,7 +43,7 @@ the organization that you wish to migrate from in the public registry.
 As an example, if you want to migrate from your organization `@babel` on the
 public registry, create an organization named `babel` in npm Enterprise.
 
-### 2. Create an authorization token
+### 2. Create an authorization token on the npm public registry
 
 To migrate from npm Orgs, you need an authorization token from the public
 registry.
