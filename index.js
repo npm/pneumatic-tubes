@@ -24,6 +24,27 @@ const opts = require('yargs')
         default: process.env.PNEUMATIC_TUBES_LAST_SEQUENCE ? Number(process.env.PNEUMATIC_TUBES_LAST_SEQUENCE) : 0
       })
   })
+  .command('orgs-import', 'import list of scoped packages from npm Orgs', (yargs) => {
+    yargs
+      .option('source-registry', {
+        describe: 'npm registry to import from (ensure you are logged in)',
+        default: 'https://registry.npmjs.org',
+        required: true
+      })
+      .option('source-token', {
+        describe: 'token for source registry (can be found in .npmrc after logging in)',
+        required: true
+      })
+      .option('migrate-file', {
+        describe: 'a newline delimited list of packages to migrate',
+        required: true
+      })
+      .option('target-registry', {
+        describe: 'registry to publish to (ensure you are logged in)',
+        default: process.env.PNEUMATIC_TUBES_TARGET_REGISTRY,
+        required: true
+      })
+  })
   .option('tmp-folder', {
     describe: 'temporary folder to stage packages in',
     default: '/tmp/tarballs'
@@ -32,6 +53,7 @@ const opts = require('yargs')
   .argv
 
 const ChangesStreamSource = require('./lib/changes-stream-source')
+const OrgsSource = require('./lib/orgs-source')
 
 class Tubes {
   constructor (opts) {
@@ -42,7 +64,11 @@ class Tubes {
   }
   start () {
     let source = null
-    source = new ChangesStreamSource(this, this.opts)
+    if (this.opts._.indexOf('couch-import') !== -1) {
+      source = new ChangesStreamSource(this, this.opts)
+    } else {
+      source = new OrgsSource(this, this.opts)
+    }
     source.start()
   }
   publish (filename) {
