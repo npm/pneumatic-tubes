@@ -31,6 +31,10 @@ Run:
 
 ## Importing From npm Orgs
 
+### Prerequisites
+
+You must purchase and configure an [npm Enterprise](https://www.npm-enterprise.com/) instance before you can migrate from npm Orgs to npm Enterprise.
+
 ### 1. Create matching organization in npm Enterprise
 
 You should create an organization in npm Enterprise that matches the name of
