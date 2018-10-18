@@ -1,79 +1,53 @@
-const axios = require('axios')
-const ChangesStream = require('changes-stream')
-const eos = require('end-of-stream')
-const exec = require('child_process').exec
-const fs = require('fs')
-const mkdirp = require('mkdirp')
-const path = require('path')
-const uuid = require('uuid')
+#!/usr/bin/env node
 
-const sourceCouchdb = process.env.PNEUMATIC_TUBES_SOURCE_COUCHDB
-const targetRegistry = process.env.PNEUMATIC_TUBES_TARGET_REGISTRY
-const lastSequence = process.env.PNEUMATIC_TUBES_LAST_SEQUENCE
+const exec = require('child_process').exec
+const mkdirp = require('mkdirp')
+const opts = require('yargs')
+  .command('couch-import', 'import from legacy changes feed', (yargs) => {
+    yargs
+      .option('source-couch-db', {
+        describe: 'changes feed to migrate (should include sharedFetchSecret)',
+        default: process.env.PNEUMATIC_TUBES_SOURCE_COUCHDB,
+        required: true
+      })
+      .option('shared-fetch-secret', {
+        describe: 'password for changes feed',
+        default: process.env.PNEUMATIC_TUBES_SHARED_FETCH_SECRET
+      })
+      .option('target-registry', {
+        describe: 'registry to publish to (ensure you are logged in)',
+        default: process.env.PNEUMATIC_TUBES_TARGET_REGISTRY,
+        required: true
+      })
+      .option('last-sequence', {
+        describe: 'changes feed sequence to start at',
+        default: process.env.PNEUMATIC_TUBES_LAST_SEQUENCE ? Number(process.env.PNEUMATIC_TUBES_LAST_SEQUENCE) : 0
+      })
+  })
+  .option('tmp-folder', {
+    describe: 'temporary folder to stage packages in',
+    default: '/tmp/tarballs'
+  })
+  .demandCommand(1)
+  .argv
+
+const ChangesStreamSource = require('./lib/changes-stream-source')
 
 class Tubes {
   constructor (opts) {
-    this.tmpFolder = '/tmp/tarballs'
-    mkdirp.sync('/tmp/tarballs')
+    this.opts = opts
+    this.tmpFolder = opts.tmpFolder
+    this.targetRegistry = opts.targetRegistry
+    mkdirp.sync(this.tmpFolder)
   }
-  series () {
-    const changes = new ChangesStream({
-      db: sourceCouchdb, // full database URL
-      include_docs: true, // whether or not we want to return the full document as a property,
-      since: lastSequence
-    })
-    changes.on('readable', async () => {
-      const change = changes.read()
-      console.info(`processing sequence ${change.seq}`)
-      if (change.doc && change.doc.versions) {
-        changes.pause()
-        try {
-          await this.processChange(change)
-        } catch (err) {
-          console.warn(err)
-        }
-        changes.resume()
-      }
-    })
-  }
-  async processChange (change) {
-    const versions = Object.keys(change.doc.versions)
-    for (var i = 0, version; (version = change.doc.versions[versions[i]]) !== undefined; i++) {
-      if (version.dist && version.dist.tarball) {
-        try {
-          const tarball = version.dist.tarball
-          const filename = await this.download(tarball)
-          await this.publish(filename)
-        } catch (err) {
-          console.warn(err.message)
-        }
-      }
-    }
-  }
-  download (tarball) {
-    const filename = path.resolve(this.tmpFolder, `${uuid.v4()}.tgz`)
-    return axios({
-      method: 'get',
-      url: tarball,
-      responseType: 'stream'
-    })
-      .then(function (response) {
-        return new Promise((resolve, reject) => {
-          const stream = response.data.pipe(fs.createWriteStream(filename))
-          eos(stream, err => {
-            if (err) return reject(err)
-            else return resolve()
-          })
-        })
-      })
-      .then(() => {
-        console.info(`finished writing ${filename}`)
-        return filename
-      })
+  start () {
+    let source = null
+    source = new ChangesStreamSource(this, this.opts)
+    source.start()
   }
   publish (filename) {
     return new Promise((resolve, reject) => {
-      exec(`npm --registry=${targetRegistry} publish ${filename}`, {
+      exec(`npm --registry=${this.targetRegistry} publish ${filename}`, {
         cwd: this.tmpFolder,
         env: process.env
       }, (err, stdout, stderr) => {
@@ -87,9 +61,5 @@ class Tubes {
   }
 }
 
-module.exports = function (opts) {
-  return new Tubes(opts)
-}
-
-const tubes = module.exports()
-tubes.series()
+const tubes = new Tubes(opts)
+tubes.start()
