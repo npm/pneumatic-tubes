@@ -49,7 +49,7 @@ To migrate from npm Orgs, you need an authorization token from the public
 registry.
 
 1. Visit https://www.npmjs.com.
-2. in the account drop down in the upper right, choose the option "Tokens".
+2. In the account drop down in the upper right corner of the page, click "Tokens".
 3. click "Create New Token", and copy this somewhere safe for later.
 
 ### 3. Login to your npm Enterprise instance
