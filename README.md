@@ -2,6 +2,12 @@
 
 Migrate from kappa, npm Enterprise Legacy, and npm Orgs, to npm Enterprise SaaS.
 
+## Installation
+
+```
+npm i -g pneumatic-tubes
+```
+
 ## Preparation
 
 - Node.js 8+
@@ -16,7 +22,7 @@ You need to point the import script at the CouchDB instance associated with your
 Run:
 
 ```bash
-./index.js couch-import --source-couch-db=[couch-db-url]/_changes --target-registry=[target-registry-url]
+pneumatic-tubes couch-import --source-couch-db=[couch-db-url]/_changes --target-registry=[target-registry-url]
 ```
 
 ## Importing From Legacy npm Enterprise
@@ -26,7 +32,7 @@ Fetch `Secret used between services` from your npm Enterprise console.
 Run:
 
 ```bash
-./index.js couch-import --source-couch-db=[couch-db-url]/_changes --target-registry=[target-registry-url] --shared-fetch-secret=[password-from-console]
+pneumatic-tubes couch-import --source-couch-db=[couch-db-url]/_changes --target-registry=[target-registry-url] --shared-fetch-secret=[password-from-console]
 ```
 
 ## Importing From npm Orgs
@@ -75,7 +81,7 @@ you generated.
 _Note: this will migrate all versions of your module._
 
 ```
-./index.js orgs-import --source-token=[redacted] --target-registry=https://registry..npme.io --migrate-file=migrate-file.txt
+pneumatic-tubes orgs-import --source-token=[redacted] --target-registry=https://registry..npme.io --migrate-file=migrate-file.txt
 ```
 
 ## Development
