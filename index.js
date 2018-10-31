@@ -44,6 +44,10 @@ const opts = require('yargs')
         default: process.env.PNEUMATIC_TUBES_TARGET_REGISTRY,
         required: true
       })
+      .option('target-token', {
+        describe: 'token for target registry (can be found in .npmrc after logging in)',
+        required: false
+      })
   })
   .option('tmp-folder', {
     describe: 'temporary folder to stage packages in',
