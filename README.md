@@ -84,6 +84,9 @@ _Note: this will migrate all versions of your module._
 pneumatic-tubes orgs-import --source-token=[redacted] --target-registry=https://registry..npme.io --migrate-file=migrate-file.txt
 ```
 
+If the option  `--target-token` is provided, upstream documents will be fetched and
+the tool will skip publishing duplicate packages.
+
 ## Development
 
 If you are making changes to `pneumatic-tubes`, you can test using a local kappa.
