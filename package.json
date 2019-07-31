@@ -4,6 +4,8 @@
   "description": "migrate packages between registries (using npm publish)",
   "main": "index.js",
   "scripts": {
+    "lint": "standard",
+    "lint:fix": "standard --fix",
     "import": "node index.js",
     "test": "standard"
   },
@@ -22,15 +24,16 @@
   },
   "homepage": "https://github.com/bcoe/pneumatic-tubes#readme",
   "dependencies": {
-    "async": "^2.6.0",
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "changes-stream": "^2.2.0",
     "end-of-stream": "^1.4.1",
     "mkdirp": "^0.5.1",
-    "uuid": "^3.2.1",
-    "yargs": "^11.0.0"
+    "stream-buffers": "^3.0.2",
+    "uuid": "^3.3.2",
+    "yargs": "^13.3.0"
   },
   "devDependencies": {
-    "kappa": "^1.0.0-rc.14"
+    "kappa": "^1.0.0-rc.14",
+    "standard": "^13.1.0"
   }
 }
