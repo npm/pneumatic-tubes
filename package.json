@@ -11,18 +11,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/bcoe/pneumatic-tubes.git"
+    "url": "git+ssh://git@github.com/npm/pneumatic-tubes.git"
   },
   "keywords": [
     "migrate",
     "npm"
   ],
   "author": "Ben Coe <ben@npmjs.com>",
+  "contributors": [
+    "Joel Edwards <joeledwards@gmail.com>"
+  ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bcoe/pneumatic-tubes/issues"
+    "url": "https://github.com/npm/pneumatic-tubes/issues"
   },
-  "homepage": "https://github.com/bcoe/pneumatic-tubes#readme",
+  "homepage": "https://github.com/npm/pneumatic-tubes#readme",
   "dependencies": {
     "axios": "^0.19.0",
     "changes-stream": "^2.2.0",
