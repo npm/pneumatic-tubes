@@ -48,6 +48,11 @@ const opts = require('yargs')
         describe: 'token for target registry (can be found in .npmrc after logging in)',
         required: false
       })
+      .option('max-fetch-attempts', {
+        type: 'number',
+        desc: 'the maximum number of times to attempt fetching a tarball before moving on to the next version',
+        default: 5
+      })
   })
   .option('tmp-folder', {
     describe: 'temporary folder to stage packages in',
@@ -61,9 +66,13 @@ const opts = require('yargs')
   })
   .option('keep-artifacts', {
     type: 'boolean',
-    desc: 'keep the artifcats around for debuggin, rather than deleting post publish',
+    desc: 'keep the artifacts (tarballs) around for debugging, rather than deleting post publish',
     default: false,
     required: false
+  })
+  .option('trace-log', {
+    type: 'boolean',
+    desc: 'turn on extra detailed logging for tracking down issues with tarball transformations'
   })
   .demandCommand(1)
   .argv
