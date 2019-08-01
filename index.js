@@ -94,8 +94,10 @@ class Tubes {
       if (version.dist && version.dist.tarball) {
         try {
           const tarball = version.dist.tarball
-          const filename = await this.download(tarball)
-          await this.publish(filename)
+          const oldArtifact = await this.download(tarball)
+          const newArtifact = await this.correctPublishRegistry(oldArtifact)
+          await this.publish(newArtifact)
+          await this.removeFile(newArtifact)
         } catch (err) {
           if (this.haltOnError) {
             console.error(err.message)
@@ -139,13 +141,18 @@ class Tubes {
       const newTarball = path.resolve(this.tmpFolder, `${uuid()}.tgz`)
       const srcStream = fs.createReadStream(tarball)
       const dstStream = fs.createWriteStream(newTarball)
+      const gunzipStream = gunzip()
+      const gzipStream = gzip()
 
       // Check whether the property is defined in the tarball
-      const done = error => {
+      const done = async error => {
         if (error) {
+          console.error('Error in stream:', error)
           reject(error)
         } else {
           pack.finalize()
+          await this.removeFile(correctedPublishRegistry ? tarball : newTarball)
+          console.info(`transformed to ${newTarball}`)
           resolve(correctedPublishRegistry ? newTarball : tarball)
         }
       }
@@ -154,28 +161,35 @@ class Tubes {
       const pack = tar.pack()
 
       extract.on('entry', (header, stream, callback) => {
-        if (header.name === 'package.json') {
+        if (header.name === 'package/package.json') {
           const inBuffer = new WritableStreamBuffer()
           const outBuffer = new ReadableStreamBuffer()
 
           stream
             .pipe(inBuffer)
-            .on('end', () => {
+            .once('error', () => {
+              reject(error)
+            })
+            .once('finish', () => {
               const pkg = JSON.parse(inBuffer.getContentsAsString('utf8'))
-              if (pkg.publishConfig.registry == null) {
+              if ((pkg.publishConfig || {}).registry == null) {
                 outBuffer.put(inBuffer.getContents())
               } else {
                 correctedPublishRegistry = true
                 if (this.removePublishRegistry) {
+                  console.info(`erasing custom registry ${pkg.publishConfig.registry}`)
                   delete pkg.publishConfig.registry
                   if (Object.keys(pkg.publishConfig).length < 1) {
                     delete pkg.publishConfig
                   }
                 } else {
+                  console.info(`rewriting custom registry: ${pkg.publishConfig.registry} -> ${this.targetRegistry}`)
                   pkg.publishConfig.registry = this.targetRegistry
                 }
                 outBuffer.put(Buffer.from(JSON.stringify(pkg)))
               }
+              outBuffer.stop()
+              header.size = outBuffer.size()
               outBuffer.pipe(pack.entry(header, callback))
             })
         } else {
@@ -184,12 +198,16 @@ class Tubes {
         }
       })
 
-      extract.on('finish', () => {
-        done()
-      })
+      extract.once('finish', () => done())
 
-      srcStream.pipe(gunzip()).pipe(extract)
-      pack.pipe(gzip()).pipe(dstStream)
+      srcStream.once('error', error => done(error))
+      dstStream.once('error', error => done(error))
+      gunzipStream.once('error', error => done(error))
+      gzipStream.once('error', error => done(error))
+      extract.once('error', error => done(error))
+
+      srcStream.pipe(gunzipStream).pipe(extract)
+      pack.pipe(gzipStream).pipe(dstStream)
     })
   }
 
@@ -204,6 +222,18 @@ class Tubes {
         else {
           console.info(`published ${stdout.trim()}`)
           return resolve()
+        }
+      })
+    })
+  }
+
+  removeFile (filename) {
+    return new Promise((resolve, reject) => {
+      fs.unlink(filename, error => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve()
         }
       })
     })
