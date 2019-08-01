@@ -1,6 +1,6 @@
 {
   "name": "pneumatic-tubes",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "migrate packages between registries (using npm publish)",
   "bin": "./index.js",
   "scripts": {
