@@ -9,6 +9,9 @@
     "import": "node index.js",
     "test": "standard"
   },
+  "bin": {
+    "pneumatic-tubes": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/npm/pneumatic-tubes.git"

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const axios = require('axios')
 const ChangesStream = require('changes-stream')
 const eos = require('end-of-stream')
