@@ -53,6 +53,18 @@ const opts = require('yargs')
     describe: 'temporary folder to stage packages in',
     default: '/tmp/tarballs'
   })
+  .option('remove-publish-registry', {
+    type: 'boolean',
+    desc: 'if .publishConfig.registry exists in package.json, remove it rather than replacing it with the target-registry',
+    default: false,
+    required: false
+  })
+  .option('keep-artifacts', {
+    type: 'boolean',
+    desc: 'keep the artifcats around for debuggin, rather than deleting post publish',
+    default: false,
+    required: false
+  })
   .demandCommand(1)
   .argv
 
@@ -66,6 +78,7 @@ class Tubes {
     this.targetRegistry = opts.targetRegistry
     mkdirp.sync(this.tmpFolder)
   }
+
   start () {
     let source = null
     if (this.opts._.indexOf('couch-import') !== -1) {
@@ -75,6 +88,7 @@ class Tubes {
     }
     source.start()
   }
+
   publish (filename) {
     return new Promise((resolve, reject) => {
       exec(`npm --registry=${this.targetRegistry} publish ${filename}`, {
