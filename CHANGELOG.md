@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/bcoe/pneumatic-tubes/compare/v2.3.1...v2.4.0) (2019-08-01)
+
+
+### Features
+
+* added --trace-log option ([de45b24](https://github.com/bcoe/pneumatic-tubes/commit/de45b24))
+
 ### [2.3.1](https://github.com/bcoe/pneumatic-tubes/compare/v2.3.0...v2.3.1) (2019-08-01)
 
 
