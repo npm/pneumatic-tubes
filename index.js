@@ -43,7 +43,7 @@ const args = yargs
     desc: 'halt when an error occurs',
     default: defaultHaltOnError
   })
-  .option('--remove-publish-registry', {
+  .option('remove-publish-registry', {
     type: 'boolean',
     desc: 'if .publishConfig.registry exists in package.json, remove it rather than replacing it with the target-registry',
     default: defaultRemovePublishRegistry
