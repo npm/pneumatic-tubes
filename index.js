@@ -8,20 +8,24 @@ const opts = require('yargs')
       .option('source-couch-db', {
         describe: 'changes feed to migrate (should include sharedFetchSecret)',
         default: process.env.PNEUMATIC_TUBES_SOURCE_COUCHDB,
-        required: true
+        required: true,
+        alias: 'c'
       })
       .option('shared-fetch-secret', {
         describe: 'password for changes feed',
-        default: process.env.PNEUMATIC_TUBES_SHARED_FETCH_SECRET
+        default: process.env.PNEUMATIC_TUBES_SHARED_FETCH_SECRET,
+        alias: 's'
       })
       .option('target-registry', {
         describe: 'registry to publish to (ensure you are logged in)',
         default: process.env.PNEUMATIC_TUBES_TARGET_REGISTRY,
-        required: true
+        required: true,
+        alias: 'R'
       })
       .option('last-sequence', {
         describe: 'changes feed sequence to start at',
-        default: process.env.PNEUMATIC_TUBES_LAST_SEQUENCE ? Number(process.env.PNEUMATIC_TUBES_LAST_SEQUENCE) : 0
+        default: process.env.PNEUMATIC_TUBES_LAST_SEQUENCE ? Number(process.env.PNEUMATIC_TUBES_LAST_SEQUENCE) : 0,
+        alias: 'seq'
       })
   })
   .command('orgs-import', 'import list of scoped packages from npm Orgs', (yargs) => {
@@ -29,50 +33,75 @@ const opts = require('yargs')
       .option('source-registry', {
         describe: 'npm registry to import from (ensure you are logged in)',
         default: 'https://registry.npmjs.org',
-        required: true
+        required: true,
+        alias: 'r'
       })
       .option('source-token', {
         describe: 'token for source registry (can be found in .npmrc after logging in)',
-        required: true
+        required: true,
+        alias: 't'
       })
       .option('migrate-file', {
         describe: 'a newline delimited list of packages to migrate',
-        required: true
+        required: true,
+        alias: 'm'
       })
       .option('target-registry', {
         describe: 'registry to publish to (ensure you are logged in)',
         default: process.env.PNEUMATIC_TUBES_TARGET_REGISTRY,
-        required: true
+        required: true,
+        alias: 'R'
       })
       .option('target-token', {
         describe: 'token for target registry (can be found in .npmrc after logging in)',
-        required: false
+        required: false,
+        alias: 'T'
       })
       .option('max-fetch-attempts', {
         type: 'number',
         desc: 'the maximum number of times to attempt fetching a tarball before moving on to the next version',
-        default: 5
+        default: 5,
+        alias: 'f'
       })
   })
   .option('tmp-folder', {
     describe: 'temporary folder to stage packages in',
-    default: '/tmp/tarballs'
+    default: '/tmp/tarballs',
+    alias: 'tmp'
   })
   .option('remove-publish-registry', {
     type: 'boolean',
     desc: 'if .publishConfig.registry exists in package.json, remove it rather than replacing it with the target-registry',
     default: false,
-    required: false
+    required: false,
+    alias: 'rm'
   })
   .option('keep-artifacts', {
     type: 'boolean',
     desc: 'keep the artifacts (tarballs) around for debugging, rather than deleting post publish',
     default: false,
-    required: false
+    required: false,
+    alias: 'k'
+  })
+  .option('scopes', {
+    type: 'array',
+    describe: 'only publish packages from this scope (may supply multiple times)',
+    coerce: scopes => {
+      const verified = scopes
+        .map(scope => (scope[0] === '@' ? '' : '@') + scope)
+        .filter(scope => scope.length > 1)
+
+      if (verified.length < scopes.length) {
+        throw new Error('Invalid scope(s)')
+      }
+
+      return verified
+    }
   })
   .option('trace-log', {
     type: 'boolean',
-    desc: 'turn on extra detailed logging for tracking down issues with tarball transformations'
+    desc: 'turn on extra detailed logging for tracking down issues with tarball transformations',
+    alias: 'v'
   })
   .demandCommand(1)
   .argv
