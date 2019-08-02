@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/bcoe/pneumatic-tubes/compare/v2.5.1...v2.6.0) (2019-08-02)
+
+
+### Features
+
+* added --scopes filtering option; added aliases for most options ([3c44125](https://github.com/bcoe/pneumatic-tubes/commit/3c44125))
+
 ### [2.5.1](https://github.com/bcoe/pneumatic-tubes/compare/v2.5.0...v2.5.1) (2019-08-02)
 
 
