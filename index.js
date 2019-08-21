@@ -101,7 +101,13 @@ const opts = require('yargs')
   .option('trace-log', {
     type: 'boolean',
     desc: 'turn on extra detailed logging for tracking down issues with tarball transformations',
-    alias: 'v'
+    alias: ['tl', 'v']
+  })
+  .option('cli-log-level', {
+    type: 'string',
+    desc: 'change the log level used by the npm CLI when publishing',
+    choices: ['silent', 'warn', 'info', 'verbose', 'silly'],
+    alias: ['ll', 'L']
   })
   .demandCommand(1)
   .argv
@@ -114,6 +120,7 @@ class Tubes {
     this.opts = opts
     this.tmpFolder = opts.tmpFolder
     this.targetRegistry = opts.targetRegistry
+    this.cliLogLevel = opts.cliLogLevel
     mkdirp.sync(this.tmpFolder)
   }
 
@@ -129,7 +136,9 @@ class Tubes {
 
   publish (filename) {
     return new Promise((resolve, reject) => {
-      exec(`npm --registry=${this.targetRegistry} publish ${filename}`, {
+      const logLevel = this.cliLogLevel ? `--loglevel=${this.cliLogLevel}` : ''
+      const registry = `--registry=${this.targetRegistry}`
+      exec(`npm ${logLevel} ${registry} publish ${filename}`, {
         cwd: this.tmpFolder,
         env: process.env
       }, (err, stdout, stderr) => {
