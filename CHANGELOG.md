@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/bcoe/pneumatic-tubes/compare/v2.7.1...v2.8.0) (2019-08-21)
+
+
+### Features
+
+* added the --cli-log-level/--ll/-L option ([748b1b6](https://github.com/bcoe/pneumatic-tubes/commit/748b1b6))
+
 ### [2.7.1](https://github.com/bcoe/pneumatic-tubes/compare/v2.7.0...v2.7.1) (2019-08-12)
 
 
