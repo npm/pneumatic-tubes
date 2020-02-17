@@ -98,6 +98,10 @@ const opts = require('yargs')
       return verified
     }
   })
+  .option('exceptions', {
+    desc: 'a newline delimited file containing package name and semver ranges to exclude from synchronization',
+    required: false
+  })
   .option('trace-log', {
     type: 'boolean',
     desc: 'turn on extra detailed logging for tracking down issues with tarball transformations',
