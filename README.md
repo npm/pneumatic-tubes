@@ -35,6 +35,17 @@ Run:
 pneumatic-tubes couch-import --source-couch-db=[couch-db-url]/_changes --target-registry=[target-registry-url] --shared-fetch-secret=[password-from-console]
 ```
 
+You may pass a `--scopes=@example` parameter to limit the import to one (or more, if specified multiple times) scopes.
+
+You may also skip specific semver ranges of specific packages by creating a text file and passing its path with `--exceptions=exceptions.txt`. Each line in this file must be the name of a package, followed by a space, followed by a semver range. For example:
+
+```
+@myorg/mypackage < 1.0.0
+@myorg/packageidontwant *
+```
+
+Would cause pneumatic-tubes to skip any version of `@myorg/mypackage` before version `1.0.0` and _all_ versions of `@myorg/packageidontwant`.
+
 ## Importing From npm Orgs
 
 ### 1. Create an authorization token
