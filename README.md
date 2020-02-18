@@ -11,7 +11,7 @@ npm i -g pneumatic-tubes
 ## Preparation
 
 - Node.js 8+
-- npm 5 - 5.6 (5.7+ are incompatible with npmE)
+- npm 5+ (to install or upgrade, run `npm install npm@latest -g`)
 - run `npm install`
 - login to your _target_ registry if needed: `npm --registry=<target-registry-url> login`
 
